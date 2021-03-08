@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <title>Anonymous chat App</title>
+    <link rel="stylesheet" href="./style.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    	$(document).ready(function(){
+        $('#action_menu_btn').click(function(){
+	        $('.action_menu').toggle();
+        });
+      });
+  
+  </script>
+  </head>
+  <body>
+    <section id="landingPage">
+      <div class="container text-center" style="margin-top: 2vh;">
+      <h2>Üdvözöllek az anonim chat appban</h2>
+      <h4>Írj be egy becenevet a kezdéshez</h4>
+        <input type="text" class="form-control" id="name" placeholder="asd">
+        <button type="button" id="startBtn" class="btn btn-info">Kezdjük</button>
+      </div>
+
+    </section>
+    <section id="waitingPage"  style="display: none;">
+      <div class="container text-center" style="margin-top: 3vh;">
+        <h2>Üdvözöllek az anonim chat appban</h2>
+        <h4>Töltsd újra a lapot ha beszélgetni akarsz</h4>
+        <button type="button" class="btn btn-info" onclick="window.location.reload();">Lap Újratöltése</button>
+        <br>
+        Ez a chat app egy Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Sunt itaque aut esse quas ipsum quibusdam nesciunt voluptatum, dolorem doloribus?<br> Aperiam ullam excepturi perferendis accusantium, neque cumque reiciendis.<br> Eius, quibusdam velit?<br>
+      </div>
+
+    </section>
+    <section id="chatPage" style="display: none;">
+          <div class="container-fluid h-100" style="margin-top: 2vh;">
+            <div class="row justify-content-center h-100">
+              <div class="col-md-8 col-xl-6 chat">
+                <div class="card">
+                  <div class="card-header msg_head">
+                    <div class="d-flex bd-highlight">
+                      <div class="user_info text-white">
+                        <span id="otherUser">NÉV</span>
+                      </div>
+                    </div>
+                    <span id="action_menu_btn"><i class="fa fa-ellipsis-v"></i></span>
+                    <div class="action_menu">
+                      <ul>
+                        <li><button type="button" class="btn btn-success" id="next"><i class="fa fa-users"></i>Új pár keresése</button></li>
+                        <li><button type="button" class="btn btn-danger" id="exit"><i class="fa fa-ban"></i>Kilépés</button></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="card-body msg_card_body" id="messages">
+                    <div class="d-flex justify-content-start mb-4">
+                      <div class="msg_container">
+                        Sziamia
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-4">
+                      <div class="msg_container_send">
+                        Szia szeretlek
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-start mb-4">
+                      <div class="msg_container">
+                        Énis, mi a neved?
+                      </div>
+                    </div>
+                
+                  </div>
+                  <div class="card-footer">
+                    <div class="input-group">
+                      <div class="input-group-append">
+                        <span class="input-group-text attach_btn" id="cameraBtn"><i class="fa fa-camera"></i></span>
+                      </div>
+                      <textarea class="form-control type_msg" id="messageText"placeholder="Írd ide az üzeneted..." required></textarea>
+                      <div class="input-group-append">
+                        <span class="input-group-text send_btn" id="sendBtn"><i class="fa fa-location-arrow"></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </section>
+
+    <p style="position: fixed; bottom: 10px; left: 10px;" id="onlineCount">
+      Felhasználók: 0
+    </p>
+
+    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+      <div class="toast" style="position: absolute; top: 0; left: 0;" data-autohide="false" >
+        <div class="toast-header">
+          <strong class="mr-auto" id="toastName"></strong>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Bezárás">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body" id="toastBody">
+        </div>
+      </div>
+    </div>
+    <section id="searching" style="display: none;">
+      <div style="margin-top: 2vh;" class="container container-fluid text-center text-white" >
+        <h3>Chatpartner keresése...</h3>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+        </div>
+  </div>
+    </section>
+
+    <script src="./socket.io.js"></script>
+    <script src="./script.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.rawgit.com/yahoo/xss-filters/master/dist/xss-filters.js"></script>
+  <script>
+    // fake progressbar
+    var step = 0.5;
+    var progress = 1;
+    var interval = setInterval(function() {
+        progress +=step
+        $(".progress-bar").css("width", progress + "%");
+        if (progress >= 80) clearInterval(interval);
+        else if(progress >= 50) step = 0.2
+    }, 100);
+  </script>  
+  </body>
+
+</html>
