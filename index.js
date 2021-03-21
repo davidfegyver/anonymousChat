@@ -1,16 +1,14 @@
 const express     = require("express");
 const io          = require("socket.io");
-const xssFilters = require('xss-filters');
-const PORT = process.env.PORT || 80;
+const PORT        = process.env.PORT || 80;
 
 const pairingQueue = [];
-let userCount = 0;
+const sockets      = {};
+let   userCount    = 0;
 
-const sockets = {};
 
-
-const app = express()
-.use(express.static("./web"));
+const app = express();
+app.use(express.static("./web"));
 
 const server = app.listen(PORT, function() {
   console.log(`Szerver elindult a ${PORT} porton`);
@@ -18,11 +16,9 @@ const server = app.listen(PORT, function() {
 
 const socketServer = io.listen(server);
 
-socketServer.sockets.on("connection", function (socket) {
-  
+socketServer.sockets.on("connection", (socket) => {
   userCount++;
   socketServer.sockets.emit("userCount", userCount);
-
 
   socket.on("login", function (nickname) {
     socket.nickname = nickname;
